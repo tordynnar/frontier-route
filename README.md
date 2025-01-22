@@ -14,8 +14,8 @@ frontier_route --system I.EXP.NJ7 --map map.json
 
 ### Starting at O.32R.QY4
 
-![logo](graph_O.32R.QY4_1737545432372.png)
+![logo](graph_O.32R.QY4_1737548859250.png)
 
 ### Starting at I.EXP.NJ7
 
-![logo](graph_I.EXP.NJ7_1737545496605.png)
+![logo](graph_I.EXP.NJ7_1737548704220.png)

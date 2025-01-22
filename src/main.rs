@@ -151,6 +151,15 @@ pub fn find_longest_paths(original_graph: Graph<System, f32, Undirected>, start_
     final_result
 }
 
+pub fn sort_tuple<T>(v: (T, T)) -> (T, T)
+where  T: PartialOrd {
+    if v.0 < v.1 {
+        (v.0, v.1)
+    } else {
+        (v.1, v.0)
+    }
+}
+
 fn main() {
     let args = Cli::parse();
 
@@ -168,11 +177,16 @@ fn main() {
         }));
     }
 
+    let mut added = HashSet::<(u32,u32)>::new();
     for (_, ss) in data.iter() {
         let index1 = *node_index.get(&ss.solarSystemID).unwrap();
         for n in &ss.neighbours {
             let index2 = *node_index.get(n).unwrap();
-            graph.add_edge(index1, index2, 1.0);
+            let system_pair = sort_tuple((ss.solarSystemID, *n));
+            if !added.contains(&system_pair) {
+                graph.add_edge(index1, index2, 1.0);
+                added.insert(system_pair);
+            }
         }
     }
 
