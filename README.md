@@ -12,10 +12,14 @@ frontier_route --system I.EXP.NJ7 --map map.json
 
 ## Examples
 
-### Starting at O.32R.QY4
+### Starting at O.32R.QY4 (acyclic)
 
 ![logo](graph_O.32R.QY4_1737548859250.png)
 
-### Starting at I.EXP.NJ7
+### Starting at I.EXP.NJ7 (acyclic)
 
 ![logo](graph_I.EXP.NJ7_1737548704220.png)
+
+### Starting at G:3N86 (cyclic)
+
+![logo](graph_G:3N86_1737550010874.png)

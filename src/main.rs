@@ -24,18 +24,27 @@ pub struct Cli {
     pub map: String,
 }
 
-#[allow(non_snake_case)]
+#[allow(non_snake_case, dead_code)]
 #[derive(Debug, Clone, Deserialize)]
 struct SolarSystem {
     solarSystemID: u32,
     solarSystemName: String,
     neighbours: Vec<u32>,
+    stations: Vec<Station>,
+}
+
+#[allow(non_snake_case, dead_code)]
+#[derive(Debug, Clone, Deserialize)]
+struct Station {
+    stationID: u32,
+    stationName: String,
 }
 
 #[derive(Clone, Debug)]
 pub struct System {
     pub id: u32,
     pub name: String,
+    pub has_station: bool,
 }
 
 #[derive(Clone)]
@@ -174,6 +183,7 @@ fn main() {
         node_index.insert(ss.solarSystemID, graph.add_node(System {
             id: ss.solarSystemID,
             name: ss.solarSystemName.clone(),
+            has_station: ss.stations.len() > 0,
         }));
     }
 
@@ -190,7 +200,18 @@ fn main() {
         }
     }
 
-    println!("Entire game cyclic: {}", algo::is_cyclic_undirected(&graph));
+    //println!("Entire game cyclic: {}", algo::is_cyclic_undirected(&graph));
+
+    println!("Cyclic regions:");
+    for (start_node, n) in graph.node_references() {
+        if n.has_station {
+            let nodes = Dfs::new(&graph, start_node).iter(&graph).collect::<HashSet<_>>();
+            let graph = filter_nodes(&graph, |i, _| nodes.contains(&i));
+            if algo::is_cyclic_undirected(&graph) {
+                println!("  {} - Nodes: {}, Edges: {}", n.name, graph.node_count(), graph.edge_count());
+            }
+        }
+    }
 
     let (start_node, start_system) = graph.node_references().find(|(_, system)| {
         system.name == args.system
