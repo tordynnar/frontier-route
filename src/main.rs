@@ -190,12 +190,16 @@ fn main() {
         }
     }
 
+    println!("Entire game cyclic: {}", algo::is_cyclic_undirected(&graph));
+
     let (start_node, start_system) = graph.node_references().find(|(_, system)| {
         system.name == args.system
     }).expect("Starting system not found");
 
     let nodes = Dfs::new(&graph, start_node).iter(&graph).collect::<HashSet<_>>();
     let graph = filter_nodes(&graph, |i, _| nodes.contains(&i));
+
+    println!("Region cyclic: {}", algo::is_cyclic_undirected(&graph));
 
     let result = find_longest_paths(graph.clone(), start_system.id);
 
@@ -205,7 +209,8 @@ fn main() {
     }
 
     let result_names = result.iter().map(|id| name_lookup.get(id).cloned().unwrap_or_default()).collect::<Vec<_>>();
-    println!("{} - {:?}", result_names.len(), result_names);
+    println!("Jumps: {}", result_names.len());
+    println!("Path: {:?}", result_names);
 
     debug_graph(&graph, &result, args.system);
 }
