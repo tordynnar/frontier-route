@@ -232,6 +232,7 @@ fn main() {
     let result_names = result.iter().map(|id| name_lookup.get(id).cloned().unwrap_or_default()).collect::<Vec<_>>();
     println!("Jumps: {}", result_names.len());
     println!("Path: {:?}", result_names);
+    println!("Path IDs: {:?}", result);
 
     debug_graph(&graph, &result, args.system);
 }
